@@ -1,0 +1,33 @@
+[{
+  "id": "1a",
+  "name": "Jane Doe",
+  "bankName": "Bank of America",
+  "description": "Checking account",
+  "transactions": [{
+    "transId": "1a1a",
+    "title": "Bose",
+    "amount": 50,
+    "pending": true
+  }, {
+    "transId": "1a1b",
+    "title": "Apple",
+    "amount": 100,
+    "pending": false
+  }]
+}, {
+  "id": "2a",
+  "name": "John Doe",
+  "bankName": "Citi Bank",
+  "description": "Saving account",
+  "transactions": [{
+    "transId": "2a2a",
+    "title": "Safeway",
+    "amount": 20,
+    "pending": true
+  }, {
+    "transId": "2a2b",
+    "title": "QFC",
+    "amount": 20,
+    "pending": false
+  }]
+}]
