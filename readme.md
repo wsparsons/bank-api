@@ -1,4 +1,4 @@
-# Complex API
+# Bank API
 
 ### You will be tasked with building an API from scratch. This API should:
 
@@ -27,4 +27,3 @@
 
 * Create, Read, Update, and Delete accounts
 * Create, Read, Update, and Delete transactions through accounts
-# bank-api
