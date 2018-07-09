@@ -1,4 +1,4 @@
-// ROUTES 
+// ROUTES
 const express = require('express')
 const router = express.Router()
 const acctCtrl = require('../controllers/accounts')
@@ -13,10 +13,10 @@ router.put('/:id', acctCtrl.update)
 router.delete('/:id', acctCtrl.remove)
 
 //// CRUD METHODS FOR TRANSACTIONS
-router.get('/:id/transactions', transCtrl.getAll)
-router.get('/:id/transactions/:transactionsId', transCtrl.getOne)
-router.post('/:id/transactions', transCtrl.create)
-router.put('/:id/transactions/:transactionsId', transCtrl.update)
-router.delete('/:id/transactions/:transactionsId', transCtrl.remove)
+// router.get('/:id/transactions', transCtrl.getAll)
+// router.get('/:id/transactions/:transactionsId', transCtrl.getOne)
+// router.post('/:id/transactions', transCtrl.create)
+// router.put('/:id/transactions/:transactionsId', transCtrl.update)
+// router.delete('/:id/transactions/:transactionsId', transCtrl.remove)
 
 module.exports = router
