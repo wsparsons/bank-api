@@ -27,13 +27,28 @@ function getOne(req, res, next){
 
 function createOne(req, res, next){
   const { name, bankName, description, transactions } = req.body
-  const data = model.createOne(name, bankName, description, transactions)
-  if(!name || !bankName || !description){
+  if(!name || typeof name !== `string`){
     return next({
       status: 400,
-      message: `Name, bank name and description are required`
+      message: `Name is required and has to be a string of characters`
     })
   }
+
+  if(!bankName || typeof bankName !== `string`){
+    return next({
+      status: 400,
+      message: `Bank name is required and has to be a string of characters`
+    })
+  }
+
+  if(!description || typeof description !== `string`){
+    return next({
+      status: 400,
+      message: `Bank name is required and has to be a string of characters`
+    })
+  }
+
+  const data = model.createOne(name, bankName, description, transactions)
   if(!data){
     return next({
       status: 404,
@@ -46,13 +61,29 @@ function createOne(req, res, next){
 function updateOne(req, res, next){
   const id = req.params.id
   const { name, bankName, description } = req.body
-  const data = model.updateOne(id, name, bankName, description)
-  if(!name || !bankName || !description){
+
+  if(!name || typeof name !== `string`){
     return next({
       status: 400,
-      message: `Name, bank name and description are required`
+      message: `Name is required and has to be a string of characters`
     })
   }
+
+  if(!bankName || typeof bankName !== `string`){
+    return next({
+      status: 400,
+      message: `Bank name is required and has to be a string of characters`
+    })
+  }
+
+  if(!description || typeof description !== `string`){
+    return next({
+      status: 400,
+      message: `Bank name is required and has to be a string of characters`
+    })
+  }
+
+  const data = model.updateOne(id, name, bankName, description)
   if(data.errors){
     return next({
       status: 404,
@@ -74,24 +105,12 @@ function removeOne(req, res, next){
   res.status(200).json({ data })
 }
 
-function getAllTrans(req, res, next){
-  const id = req.params.id
-  const limit = req.query.limit
-  const data = model.getAllTrans(id, limit)
-  if(data.errors){
-    return next({
-      status: 404,
-      message: data.errors
-    })
-  }
-  res.status(200).json({ data })
-}
+
 
 module.exports = {
   getAll,
   getOne,
   createOne,
   updateOne,
-  removeOne,
-  getAllTrans
+  removeOne
 }
