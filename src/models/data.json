@@ -7,12 +7,12 @@
     "transId": "1a1a",
     "title": "Bose",
     "amount": 50,
-    "pending": true
+    "transPending": true
   }, {
     "transId": "1a1b",
     "title": "Apple",
     "amount": 100,
-    "pending": false
+    "transPending": false
   }]
 }, {
   "id": "2a",
@@ -23,11 +23,11 @@
     "transId": "2a2a",
     "title": "Safeway",
     "amount": 20,
-    "pending": true
+    "transPending": true
   }, {
     "transId": "2a2b",
     "title": "QFC",
     "amount": 20,
-    "pending": false
+    "transPending": false
   }]
 }]

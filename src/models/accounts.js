@@ -2,8 +2,8 @@
 const uuid = require('uuid/v4')
 const data = require('./data')
 
-function validateAccountId (accountId){
-  let account = data.find(account => account.id === accountId)
+function validateAccountId (id){
+  let account = data.find(account => account.id === id)
   return account;
 }
 
@@ -21,6 +21,7 @@ function getOne(id){
 }
 
 function createOne (name, bankName, description){
+
   const newAccount = { id: uuid(), name, bankName, description, transactions: []}
   data.push(newAccount)
   return newAccount;
@@ -57,26 +58,11 @@ function removeOne(id){
   return response
 }
 
-function getAllTrans(id, limit){
-  const errors = []
-  let response;
-  const account = validateAccountId(id)
-  if(!account){
-    errors.push(`Could not find account with ID of ${id}`)
-    response = { errors }
-  } else if (limit){
-    response = account.transactions.slice(0, limit)
-  } else {
-    response = account.transactions
-  }
-  return response
-}
 
 module.exports = {
   getAll,
   getOne,
   createOne,
   updateOne,
-  removeOne,
-  getAllTrans
+  removeOne
 }
