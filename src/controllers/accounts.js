@@ -2,7 +2,14 @@
 const model = require('../models/accounts')
 
 function getAll(req, res, next){
-  const data = model.getAll()
+  const limit = req.query.limit
+  const data = model.getAll(limit)
+  if(!data){
+    return next({
+      status: 404,
+      message: `Cound not find accounts`
+    })
+  }
   res.status(200).json({ data })
 }
 
@@ -18,9 +25,9 @@ function getOne(req, res, next){
   res.status(200).json({ data })
 }
 
-function create(req, res, next){
-  const { name, bankName, description } = req.body
-  const data = model.create(name, bankName, description)
+function createOne(req, res, next){
+  const { name, bankName, description, transactions } = req.body
+  const data = model.createOne(name, bankName, description, transactions)
   if(!name || !bankName || !description){
     return next({
       status: 400,
@@ -36,10 +43,10 @@ function create(req, res, next){
   res.status(201).json({ data })
 }
 
-function update(req, res, next){
+function updateOne(req, res, next){
   const id = req.params.id
   const { name, bankName, description } = req.body
-  const data = model.update(id, name, bankName, description)
+  const data = model.updateOne(id, name, bankName, description)
   if(!name || !bankName || !description){
     return next({
       status: 400,
@@ -55,9 +62,22 @@ function update(req, res, next){
   res.status(200).json({ data })
 }
 
-function remove(req, res, next){
+function removeOne(req, res, next){
   const id = req.params.id
-  const data = model.remove(id)
+  const data = model.removeOne(id)
+  if(data.errors){
+    return next({
+      status: 404,
+      message: data.errors
+    })
+  }
+  res.status(200).json({ data })
+}
+
+function getAllTrans(req, res, next){
+  const id = req.params.id
+  const limit = req.query.limit
+  const data = model.getAllTrans(id, limit)
   if(data.errors){
     return next({
       status: 404,
@@ -70,7 +90,8 @@ function remove(req, res, next){
 module.exports = {
   getAll,
   getOne,
-  create,
-  update,
-  remove
+  createOne,
+  updateOne,
+  removeOne,
+  getAllTrans
 }
