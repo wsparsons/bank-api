@@ -50,7 +50,7 @@ function updateOne(req, res, next){
       message: result.errors
     })
   }
-  res.status(200).json({ data : result })
+  res.status(200).json({ data: result })
 }
 
 function removeOne(req, res, next){

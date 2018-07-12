@@ -6,7 +6,7 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
-if (process.env.NODE_ENV !== 'development') app.use(morgan('dev'))
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
 app.disable('x-powered-by')
 
@@ -15,17 +15,21 @@ const accountsRoute = require('./src/routes/accounts')
 app.use('/accounts', accountsRoute)
 
 const transactionsRoute = require('./src/routes/transactions')
-app.use('/accounts/:id', transactionsRoute)
+app.use('/accounts/:id/transactions', transactionsRoute)
 
 //// DEFAULT ROUTE
 app.use(function(res, req, next) {
-  res.status(404).json({ error: { message: 'Not found' }})
+  next({
+    status: 404,
+    message: 'Route not found'
+  })
 })
 
 //// ERROR HANDLING
 app.use((err, req, res, next) => {
   console.error(err)
   const status = err.status || 500
+  const message = err.message || 'Internal Server Error'
   res.status(status).json({ error: err })
 })
 
