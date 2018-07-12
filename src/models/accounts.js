@@ -2,60 +2,121 @@
 const uuid = require('uuid/v4')
 const data = require('./data')
 
-function validateAccountId (id){
-  let account = data.find(account => account.id === id)
-  return account;
+function validateAccountId(id) {
+  let result = data.find(account => account.id === id)
+  return result;
 }
 
-function getAll(limit){
-  let response = data;
-  if(limit){
-    response = data.slice(0, limit)
+function validateAccountBody(body) {
+  const errors = []
+  const name = body.name
+  const bankName = body.bankName
+  const description = body.description
+
+  if (!name || typeof name !== `string`) {
+    errors.push(`Name is required and has to be a string of characters`)
   }
-  return response;
+
+  if (!bankName || typeof bankName !== `string`) {
+    errors.push(`Bank name is required and has to be a string of characters`)
+  }
+
+  if (!description || typeof description !== `string`) {
+    errors.push(`Description is required and has to be a string of characters`)
+  }
+  return errors
 }
 
-function getOne(id){
-  let response = validateAccountId(id);
-  return response;
+function getAll(limit) {
+  return limit ? data.slice(0, limit) : data
 }
 
-function createOne (name, bankName, description){
+function getOne(acctId) {
+  const errors = []
+  const account = validateAccountId(acctId);
+  let response;
 
-  const newAccount = { id: uuid(), name, bankName, description, transactions: []}
+  if (!account) {
+    errors.push(`Could not find account with ID of ${acctId}`)
+    response = {
+      errors
+    }
+    return response
+  }
+  return account
+}
+
+
+function createOne(acctBody) {
+  const errors = []
+  const validateAcctBody = validateAccountBody(acctBody)
+  const name = acctBody.name
+  const bankName = acctBody.bankName
+  const description = acctBody.description
+  let response;
+
+  if (validateAcctBody.length) {
+    errors.push(validateAcctBody)
+    response = {
+      errors
+    }
+    return response
+  }
+
+  const newAccount = {
+    id: uuid(),
+    name,
+    bankName,
+    description,
+    transactions: []
+  }
   data.push(newAccount)
-  return newAccount;
+  return newAccount
 }
 
-function updateOne(id, name, bankName, description){
+function updateOne(acctId, acctBody) {
   const errors = []
+  const updateAccount = validateAccountId(acctId)
+  const validateAcctBody = validateAccountBody(acctBody)
   let response;
-  const updateAccount = validateAccountId(id)
-  if(!updateAccount){
+
+  if (!updateAccount) {
     errors.push(`Could not find account with ID of ${id}`)
-    response = { errors }
-  } else {
-    updateAccount.name = name
-    updateAccount.bankName = bankName
-    updateAccount.description = description
-    response = updateAccount
+    response = {
+      errors
+    }
+    return response
   }
-  return response
+
+  if (validateAcctBody.length) {
+    errors.push(validateAcctBody)
+    response = {
+      errors
+    }
+    return response
+  }
+
+  updateAccount.name = acctBody.name
+  updateAccount.bankName = acctBody.bankName
+  updateAccount.description = acctBody.description
+  return updateAccount
 }
 
-function removeOne(id){
+function removeOne(acctId) {
   const errors = []
+  const deleteAccount = validateAccountId(acctId)
   let response;
-  const deleteAccount = validateAccountId(id)
-  if(!deleteAccount){
-    errors.push(`Could not find account with ID of ${id}`)
-    response = { errors }
-  } else {
-    const index = data.indexOf(deleteAccount)
-    data.splice(index, 1)
-    response = deleteAccount
+  if (!deleteAccount) {
+    errors.push(`Could not find account with ID of ${acctId}`)
+    response = {
+      errors
+    }
+    return response
   }
-  return response
+
+  const index = data.indexOf(deleteAccount)
+  data.splice(index, 1)
+  return deleteAccount
 }
 
 

@@ -6,7 +6,7 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use(morgan('dev'))
+if (process.env.NODE_ENV !== 'development') app.use(morgan('dev'))
 
 app.disable('x-powered-by')
 
@@ -14,31 +14,23 @@ app.disable('x-powered-by')
 const accountsRoute = require('./src/routes/accounts')
 app.use('/accounts', accountsRoute)
 
+const transactionsRoute = require('./src/routes/transactions')
+app.use('/accounts/:id', transactionsRoute)
 
 //// DEFAULT ROUTE
 app.use(function(res, req, next) {
-  const status = 404
-  const message = `Route not found`
-  next({status, message})
+  res.status(404).json({ error: { message: 'Not found' }})
 })
 
 //// ERROR HANDLING
 app.use((err, req, res, next) => {
   console.error(err)
-  const errorMessage = {}
-
-  if (process.env.NODE_ENV !== 'development' && err.stack){
-    errorMessage.stack = err.stack
-  }
-
-  errorMessage.status = err.status || 500
-  errorMessage.message = err.message || 'Internal Server Error'
-
-  res.status(errorMessage.status).send(errorMessage)
+  const status = err.status || 500
+  res.status(status).json({ error: err })
 })
 
 //// STARTING SERVER
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 const listener = () => console.log(`Listening on port ${port}`)
 app.listen(port, listener)
 

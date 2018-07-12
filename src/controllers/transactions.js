@@ -2,115 +2,68 @@
 const model = require('../models/transactions')
 
 function getAllTrans(req, res, next){
-  const id = req.params.id
-  const limit = req.query.limit
-  const data = model.getAllTrans(id, limit)
-  if(data.errors){
+  const acctId = req.params.id
+  const result = model.getAllTrans(acctId)
+  if(result.errors){
     return next({
       status: 404,
-      message: data.errors
+      message: result.errors
     })
   }
-  res.status(200).json({ data })
+  res.status(200).json({ data: result })
 }
 
 function getOneTrans(req, res, next){
-  const id = req.params.id
+  const acctId = req.params.id
   const transId = req.params.transId
-  const data = model.getOneTrans(id, transId)
-  if(data.errors){
+  const result = model.getOneTrans(acctId, transId)
+  if(result.errors){
     return next({
       status: 404,
-      message: data.errors
+      message: result.errors
     })
   }
-  res.status(200).json({ data })
+  res.status(200).json({ data: result})
 }
 
 function createOneTrans(req, res, next){
-  const id = req.params.id
-  const { title, amount, transPending } = req.body
-
-  if(!title || typeof title !== `string`|| title.length > 8){
+  const acctId = req.params.id
+  const transBody = req.body
+  const result = model.createOneTrans(acctId, transBody)
+  if(result.errors){
     return next({
       status: 400,
-      message: `Title is required and has to be a string that cannot be longer than 8 characters`
+      message: result.errors
     })
   }
-
-  if(!amount || typeof amount !== `number`){
-    return next({
-      status: 400,
-      message: `Amount is required and has to be a numeric number`
-    })
-  }
-
-  if(!transPending || typeof transPending !== `boolean`){
-    return next({
-      status: 400,
-      message: `Transaction status is required and has to be a true/false value`
-    })
-  }
-
-  const data = model.createOneTrans(id, title, amount, transPending)
-  if(data.errors){
-    return next({
-      status: 404,
-      message: data.errors
-    })
-  }
-  res.status(201).json({ data })
+  res.status(201).json({ data: result })
 }
 
 function updateOneTrans(req, res, next){
-  const id = req.params.id
+  const acctId = req.params.id
   const transId = req.params.transId
-
-  const { title, amount, transPending } = req.body
-
-  if(!title || typeof title !== `string`|| title.length > 8){
-    return next({
-      status: 400,
-      message: `Title is required and has to be a string that cannot be longer than 8 characters`
-    })
-  }
-
-  if(!amount || typeof amount !== `number`){
-    return next({
-      status: 400,
-      message: `Amount is required and has to be a numeric number`
-    })
-  }
-
-  if(!transPending || typeof transPending !== `boolean`){
-    return next({
-      status: 400,
-      message: `Transaction status is required and has to be a true/false value`
-    })
-  }
-
-  const data = model.updateOneTrans(id, transId, title, amount, transPending)
-
-  if(data.errors){
+  const transBody = req.body
+  const result = model.updateOneTrans(acctId, transId, transBody)
+  if(result.errors){
     return next({
       status: 404,
-      message: data.errors
+      message: result.errors
     })
   }
-  res.status(201).json({ data })
+  res.status(201).json({ data: result })
 }
 
 function removeOneTrans(req, res, next){
-  const id = req.params.id
+  const acctId = req.params.id
   const transId = req.params.transId
-  const data = model.removeOneTrans(id, transId)
-  if(data.errors){
+  const result = model.removeOneTrans(acctId, transId)
+  if(result.errors){
     return next({
       status: 404,
-      message: data.errors
+      message: result.errors
     })
   }
-  res.status(200).json({ data })
+  res.status(200).json({ data: result })
 }
 
 module.exports = {

@@ -13,10 +13,10 @@ router.put('/:id', ctrlAccts.updateOne)
 router.delete('/:id', ctrlAccts.removeOne)
 
 //// CRUD METHODS FOR TRANSACTIONS
-router.get('/:id/transactions', ctrlTrans.getAllTrans)
-router.get('/:id/transactions/:transId', ctrlTrans.getOneTrans)
-router.post('/:id/transactions', ctrlTrans.createOneTrans)
-router.put('/:id/transactions/:transId', ctrlTrans.updateOneTrans)
-router.delete('/:id/transactions/:transId', ctrlTrans.removeOneTrans)
+// router.get('/:id/transactions', ctrlTrans.getAllTrans)
+// router.get('/:id/transactions/:transId', ctrlTrans.getOneTrans)
+// router.post('/:id/transactions', ctrlTrans.createOneTrans)
+// router.put('/:id/transactions/:transId', ctrlTrans.updateOneTrans)
+// router.delete('/:id/transactions/:transId', ctrlTrans.removeOneTrans)
 
 module.exports = router
